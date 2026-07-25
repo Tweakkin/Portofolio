@@ -190,9 +190,9 @@
 	}
 
 	function handleNavScroll() {
-		var scrollY = window.scrollY;
+		var scrollY = window.scrollY / 0.87;
 
-		if (scrollY > 20) {
+		if (window.scrollY > 20) {
 			navbar.classList.add('scrolled');
 		} else {
 			navbar.classList.remove('scrolled');
@@ -900,6 +900,113 @@
 
 
 	// ========================
+	// 15. PROJECT MODAL
+	// ========================
+
+	var PROJECT_DATA = {
+		fly_in: {
+			name: 'Fly-in',
+			description: "A drone traffic simulation written in Python. Finds optimal routes across a network of hubs using Dijkstra's algorithm, and simulates turn-by-turn drone movement while respecting capacity limits.",
+			tech: ['Python', 'Pathfinding', "Dijkstra's Algorithm", 'Simulation'],
+			github: 'https://github.com/Tweakkin/Fly-in'
+		},
+		libft: {
+			name: 'libft',
+			description: 'Rebuilt the entire C standard library from scratch — string manipulation, memory functions, linked lists, and more. The foundation of every subsequent 42 project.',
+			tech: ['C', 'Manual Memory Management', 'Standard Library'],
+			github: 'https://github.com/Tweakkin/libft_1337'
+		},
+		ft_printf: {
+			name: 'ft_printf',
+			description: 'A full re-implementation of the C printf function, supporting all major format specifiers. Explored how variadic functions and formatted I/O work at a low level.',
+			tech: ['C', 'Variadic Functions', 'I/O Formatting'],
+			github: 'https://github.com/Tweakkin/ft_printf_1337'
+		},
+		get_next_line: {
+			name: 'get_next_line',
+			description: 'A function that reads a file descriptor line by line using a static buffer. Taught file I/O, buffer state management, and handling multiple file descriptors simultaneously.',
+			tech: ['C', 'File I/O', 'Buffer Management', 'Static Variables'],
+			github: 'https://github.com/Tweakkin/get_next_line_1337'
+		},
+		so_long: {
+			name: 'So_Long',
+			description: 'A 2D top-down game built without any game engine, using only C and MiniLibX. Implemented map parsing, event-driven input handling, sprite rendering, and win/lose conditions.',
+			tech: ['C', 'MiniLibX', 'Event-Driven Programming', 'Real-Time Rendering'],
+			github: 'https://github.com/Tweakkin/So_Long_1337'
+		},
+		push_swap: {
+			name: 'push_swap',
+			description: 'Sort a stack of integers using only two stacks and a limited set of operations, in the minimum number of moves possible. A deep dive into algorithm design and complexity analysis.',
+			tech: ['C', 'Algorithm Optimization', 'Complexity Analysis', 'Stack Data Structure'],
+			github: 'https://github.com/Tweakkin/push_swap_1337'
+		},
+		a_maze_ing: {
+			name: 'A-Maze-Ing',
+			description: 'A terminal-based maze generator and solver built in Python. Implements and visualizes DFS, BFS, and Prim\'s algorithm in real time. Built as a team project.',
+			tech: ['Python', 'Graph Traversal', 'DFS', 'BFS', "Prim's Algorithm", 'CLI'],
+			github: 'https://github.com/Tweakkin/A_Maze_Ing'
+		},
+		born2beroot: {
+			name: 'Born2beroot',
+			description: 'Set up a complete Debian Linux server from scratch inside a virtual machine with no GUI. Covered user management, disk partitioning, firewall rules, SSH hardening, and sudo policies.',
+			tech: ['Linux', 'Debian', 'System Administration', 'DevOps', 'VirtualBox', 'Bash'],
+			github: 'https://github.com/Tweakkin/Born2beroot'
+		},
+		python_42: {
+			name: 'Python 42 Modules',
+			description: "42's official Python curriculum — a series of progressively harder exercises covering OOP principles, data validation, decorators, and Python-specific idioms.",
+			tech: ['Python', 'OOP', 'Data Validation', 'Decorators'],
+			github: 'https://github.com/Tweakkin/Python_42_modules'
+		}
+	};
+
+	function initProjectModal() {
+		var modal = $('#proj-modal');
+		var overlay = $('#proj-modal-overlay');
+		var closeBtn = $('#proj-modal-close');
+		if (!modal) return;
+
+		function openModal(projectKey) {
+			var data = PROJECT_DATA[projectKey];
+			if (!data) return;
+
+			$('#proj-modal-title').textContent = data.name;
+			$('#proj-modal-desc').textContent = data.description;
+			$('#proj-modal-link').href = data.github;
+
+			var techEl = $('#proj-modal-tech');
+			techEl.innerHTML = data.tech.map(function (t) {
+				var langClass = (t === 'C' || t === 'Python' || t === 'Bash') ? ' proj-card__tag--lang' : '';
+				return '<span class="proj-card__tag' + langClass + '">' + escapeHTML(t) + '</span>';
+			}).join('');
+
+			modal.classList.add('proj-modal--open');
+			modal.setAttribute('aria-hidden', 'false');
+			document.body.style.overflow = 'hidden';
+		}
+
+		function closeModal() {
+			modal.classList.remove('proj-modal--open');
+			modal.setAttribute('aria-hidden', 'true');
+			document.body.style.overflow = '';
+		}
+
+		$$('.proj-card').forEach(function (card) {
+			card.addEventListener('click', function () {
+				openModal(card.getAttribute('data-project'));
+			});
+		});
+
+		closeBtn.addEventListener('click', closeModal);
+		overlay.addEventListener('click', closeModal);
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') closeModal();
+		});
+	}
+
+
+	// ========================
 	// INITIALIZATION
 	// ========================
 
@@ -908,6 +1015,7 @@
 		refreshNavTargets();
 		initScrollAnimations();
 		initSmoothScroll();
+		initProjectModal();
 		initContactForm();
 		initResumeDownload();
 
