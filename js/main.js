@@ -932,7 +932,8 @@
 			name: 'So_Long',
 			description: 'A 2D top-down game built without any game engine, using only C and MiniLibX. Implemented map parsing, event-driven input handling, sprite rendering, and win/lose conditions.',
 			tech: ['C', 'MiniLibX', 'Event-Driven Programming', 'Real-Time Rendering'],
-			github: 'https://github.com/Tweakkin/So_Long_1337'
+			github: 'https://github.com/Tweakkin/So_Long_1337',
+			media: 'assets/so_long_gif.gif'
 		},
 		push_swap: {
 			name: 'push_swap',
@@ -944,7 +945,8 @@
 			name: 'A-Maze-Ing',
 			description: 'A terminal-based maze generator and solver built in Python. Implements and visualizes DFS, BFS, and Prim\'s algorithm in real time. Built as a team project.',
 			tech: ['Python', 'Graph Traversal', 'DFS', 'BFS', "Prim's Algorithm", 'CLI'],
-			github: 'https://github.com/Tweakkin/A_Maze_Ing'
+			github: 'https://github.com/Tweakkin/A_Maze_Ing',
+			media: 'assets/maze_vid.gif'
 		},
 		born2beroot: {
 			name: 'Born2beroot',
@@ -973,6 +975,17 @@
 			$('#proj-modal-title').textContent = data.name;
 			$('#proj-modal-desc').textContent = data.description;
 			$('#proj-modal-link').href = data.github;
+
+			var mediaEl = $('#proj-modal-media');
+			if (mediaEl) {
+				if (data.media) {
+					mediaEl.src = data.media;
+					mediaEl.style.display = 'block';
+				} else {
+					mediaEl.src = '';
+					mediaEl.style.display = 'none';
+				}
+			}
 
 			var techEl = $('#proj-modal-tech');
 			techEl.innerHTML = data.tech.map(function (t) {
