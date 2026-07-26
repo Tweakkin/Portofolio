@@ -906,52 +906,53 @@
 	var PROJECT_DATA = {
 		fly_in: {
 			name: 'Fly-in',
-			description: "A drone traffic simulation written in Python. Finds optimal routes across a network of hubs using Dijkstra's algorithm, and simulates turn-by-turn drone movement while respecting capacity limits.",
-			tech: ['Python', 'Pathfinding', "Dijkstra's Algorithm", 'Simulation'],
-			github: 'https://github.com/Tweakkin/Fly-in'
+			description: "A routing engine built in Python, where drone fleets fight for limited network capacity, solved with custom Dijkstra and deadlock-free scheduling.",
+			tech: ['Python', 'Graph Algorithms & Pathfinding', 'Object-Oriented Design (OOD)', 'Robust Data Validation & Error Handling', 'State Management & Simulation Logic'],
+			github: 'https://github.com/Tweakkin/Fly-in',
+			media: 'assets/flyin_video.webm'
 		},
 		libft: {
 			name: 'libft',
-			description: 'Rebuilt the entire C standard library from scratch — string manipulation, memory functions, linked lists, and more. The foundation of every subsequent 42 project.',
-			tech: ['C', 'Manual Memory Management', 'Standard Library'],
+			description: 'Rebuilt the C standard library from scratch, reimplementing core libc functions and extending them with additional data structure.',
+			tech: ['C', 'Memory Management', 'Data Structures', 'Low-Level Programming'],
 			github: 'https://github.com/Tweakkin/libft_1337'
 		},
 		ft_printf: {
 			name: 'ft_printf',
-			description: 'A full re-implementation of the C printf function, supporting all major format specifiers. Explored how variadic functions and formatted I/O work at a low level.',
-			tech: ['C', 'Variadic Functions', 'I/O Formatting'],
+			description: "A custom reimplementation of C's printf, parsing format strings and variadic arguments to support common conversions without the standard library.",
+			tech: ['C', 'Variadic Functions', 'Format String Parsing', 'Type Conversion', 'Output Buffering'],
 			github: 'https://github.com/Tweakkin/ft_printf_1337'
 		},
 		get_next_line: {
 			name: 'get_next_line',
-			description: 'A function that reads a file descriptor line by line using a static buffer. Taught file I/O, buffer state management, and handling multiple file descriptors simultaneously.',
-			tech: ['C', 'File I/O', 'Buffer Management', 'Static Variables'],
+			description: "A custom C function that reads a file line-by-line, regardless of file size or line length, using static memory to track read position across calls.",
+			tech: ['C', 'File I/O', 'Static/Persistent Memory', 'Multi-File Descriptor Support', 'Buffer Management'],
 			github: 'https://github.com/Tweakkin/get_next_line_1337'
 		},
 		so_long: {
 			name: 'So_Long',
-			description: 'A 2D top-down game built without any game engine, using only C and MiniLibX. Implemented map parsing, event-driven input handling, sprite rendering, and win/lose conditions.',
-			tech: ['C', 'MiniLibX', 'Event-Driven Programming', 'Real-Time Rendering'],
+			description: 'A 2D game engine built in C without using any existing game engine, handling real-time rendering, collision detection, and event-driven input.',
+			tech: ['C', 'Real-Time Rendering & Game Loop Architecture', 'Event-Driven Programming', 'Manual Memory Management', 'Collision Detection & Map Parsing', 'Game state management'],
 			github: 'https://github.com/Tweakkin/So_Long_1337',
 			media: 'assets/so_long_gif.gif'
 		},
 		push_swap: {
 			name: 'push_swap',
-			description: 'Sort a stack of integers using only two stacks and a limited set of operations, in the minimum number of moves possible. A deep dive into algorithm design and complexity analysis.',
-			tech: ['C', 'Algorithm Optimization', 'Complexity Analysis', 'Stack Data Structure'],
+			description: 'A two-stack sorting algorithm using a customized chunk strategy to sort integers in as few operations as possible.',
+			tech: ['C', 'Algorithm Design & Optimization', 'Data Structure Manipulation', 'Complexity & Cost Analysis', 'Input Validation & Error Handling'],
 			github: 'https://github.com/Tweakkin/push_swap_1337'
 		},
 		a_maze_ing: {
 			name: 'A-Maze-Ing',
-			description: 'A terminal-based maze generator and solver built in Python. Implements and visualizes DFS, BFS, and Prim\'s algorithm in real time. Built as a team project.',
-			tech: ['Python', 'Graph Traversal', 'DFS', 'BFS', "Prim's Algorithm", 'CLI'],
+			description: "A maze generator and solver in Python, carving mazes with Prim's algorithm and DFS, then solving them with BFS to guarantee the shortest path.",
+			tech: ['Python', 'Graph Traversal & Search', 'Real-Time Terminal Visualization', 'Team Collaboration & CLI Tooling', 'DFS / BFS / Prim Algorithms'],
 			github: 'https://github.com/Tweakkin/A_Maze_Ing',
 			media: 'assets/maze_vid.gif'
 		},
 		born2beroot: {
 			name: 'Born2beroot',
-			description: 'Set up a complete Debian Linux server from scratch inside a virtual machine with no GUI. Covered user management, disk partitioning, firewall rules, SSH hardening, and sudo policies.',
-			tech: ['Linux', 'Debian', 'System Administration', 'DevOps', 'VirtualBox', 'Bash'],
+			description: 'Configured a secure, headless Linux virtual machine from scratch with automated bash monitoring and strict security hardening.',
+			tech: ['Bash', 'Linux Administration', 'Server Security', 'Virtualization'],
 			github: 'https://github.com/Tweakkin/Born2beroot'
 		},
 		python_42: {
@@ -977,14 +978,26 @@
 			$('#proj-modal-link').href = data.github;
 
 			var mediaEl = $('#proj-modal-media');
-			if (mediaEl) {
-				if (data.media) {
-					mediaEl.src = data.media;
-					mediaEl.style.display = 'block';
+			var videoEl = $('#proj-modal-media-video');
+			
+			if (data.media) {
+				var isVideo = data.media.endsWith('.webm') || data.media.endsWith('.mp4');
+				if (isVideo) {
+					if (mediaEl) { mediaEl.style.display = 'none'; mediaEl.src = ''; }
+					if (videoEl) {
+						videoEl.src = data.media;
+						videoEl.style.display = 'block';
+					}
 				} else {
-					mediaEl.src = '';
-					mediaEl.style.display = 'none';
+					if (videoEl) { videoEl.style.display = 'none'; videoEl.src = ''; }
+					if (mediaEl) {
+						mediaEl.src = data.media;
+						mediaEl.style.display = 'block';
+					}
 				}
+			} else {
+				if (mediaEl) { mediaEl.src = ''; mediaEl.style.display = 'none'; }
+				if (videoEl) { videoEl.src = ''; videoEl.style.display = 'none'; }
 			}
 
 			var techEl = $('#proj-modal-tech');
